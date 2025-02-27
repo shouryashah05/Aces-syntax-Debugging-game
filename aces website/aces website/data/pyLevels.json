@@ -1,0 +1,44 @@
+{
+    "levels": [
+        {
+            "id": "level1",
+            "title": "Level 1: Fix the PYTHON",
+            "description": "The following PYTHON is incorrect. Fix it to proceed.",
+            "initialCode": "print('Hello World)",
+            "correctCode": "print('Hello World')",
+            "language": "PYTHON"
+        },
+        {
+            "id": "level2",
+            "title": "Level 2: Fix the PYTHON",
+            "description": "The following PYTHON is incorrect. Fix it to proceed.",
+            "initialCode": "my_var = 1 \n print(my_vAr)",
+            "correctCode": "my_var = 1 \n print(my_var)",
+            "language": "PYTHON"
+        },
+        {
+            "id": "level3",
+            "title": "Level 3: Identify missing import Syntax",
+            "description": "The following PYTHON code is missing a import syntax. Fix it to proceed.",
+            "initialCode": "print(sqrt(25))",
+            "correctCode": "from math import sqrt\nprint(sqrt(25))",
+            "language": "PYTHON"
+        },
+        {
+            "id": "level4",
+            "title": "Level 4: Fix the indentation of syntax",
+            "description": "The following CSS does not change the text color to blue. Fix it to proceed.",
+            "initialCode": " if x > 5 \n print(\"x is greater than 5\")",
+            "correctCode": "if x > 5: \n print(\"x is greater than 5\")",
+            "language": "PYTHON"
+        },
+        {
+            "id": "level5",
+            "title": "Level 5: Fix the indentation of syntax",
+
+            "initialCode": "print(\"The value is: \" + 5)",
+            "correctCode": "print(\"The value is: \" + str(5))",
+            "language": "PYTHON"
+        }
+    ]
+}

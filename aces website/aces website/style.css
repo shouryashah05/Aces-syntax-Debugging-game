@@ -1,0 +1,150 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+        background: rgb(24, 23, 23);
+
+}
+
+.hidden {
+    display: none;
+}
+
+.outer-box {
+    background-color: #1c1c1c;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 30px;
+    border: none;
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+
+/*border animantion*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.level {
+    display: none; /* Initially hidden */
+    margin-top: 20px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #666;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #333;
+    color: #fff;
+}
+
+#win {
+    color: white;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+#timer, #score {
+    position: absolute; /* Change from fixed to absolute */
+    top: 10px;
+    right: 10px;
+    color: white;
+    background-color: rgba(0,0,0,0.5);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#score {
+    top: 40px;
+}
+
+h1{
+    color: rgb(220, 220, 220);
+}
+
+p{
+    color: rgb(220, 220, 220);
+    margin-bottom: 40px;
+}
+
+
+@property --gradient-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+:root {
+    --clr-1: #000000; 
+    --clr-2: #073438;
+    --clr-3: #0e4b50;
+    --clr-4: #2d8f85;
+    --clr-5: #637c54;
+}
+
+.outer-box {
+    height: 60vh;
+    aspect-ratio: 0.6666666667;
+    background: var(--clr-1);
+    border-radius: 0.5rem;
+    position: relative;
+}
+.outer-box::before, .outer-box::after {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+    z-index: -1;
+    background: conic-gradient(from var(--gradient-angle), var(--clr-3), var(--clr-4), var(--clr-5), var(--clr-4), var(--clr-3));
+    border-radius: inherit;
+    animation: rotation 20s linear infinite;
+}
+.outer-box::after {
+    filter: blur(3.5rem);
+}
+@keyframes rotation {
+    0% {
+        --gradient-angle: 0deg;
+   }
+    100% {
+        --gradient-angle: 360deg;
+   }
+}
