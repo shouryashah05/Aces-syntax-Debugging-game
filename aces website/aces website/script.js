@@ -1,8 +1,11 @@
 // code for the html css debuging part 
 
 function showLevel1() {
-    document.getElementById("buttonContainer").style.display = "none"; // Hide button container
+    // Hide all initial elements
+    document.getElementById("buttonContainer").style.display = "none";
     document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";  // Added this line
+    document.getElementById("introText").style.display = "none"; // Added this line
 
     fetch('data/htmlLevels.json')
         .then(response => response.json())
@@ -23,21 +26,32 @@ function showLevel1() {
                 levelsContainer.appendChild(levelDiv);
             });
             document.getElementById(data.levels[0].id).style.display = "block"; // Show the first level
+            startTimer(1, checkHtmlLevel);
         });
 }
 
-function checkHtmlLevel(levelIndex) {
+function checkHtmlLevel(levelIndex, autoSubmit = false) {
     fetch('data/htmlLevels.json')
         .then(response => response.json())
         .then(data => {
             const level = data.levels[levelIndex - 1];
             const userCode = document.getElementById(`htmlInput${levelIndex}`).value.trim();
             if (userCode === level.correctCode) {
+                updateScore();
                 document.getElementById(level.id).style.display = "none";
                 if (levelIndex < data.levels.length) {
                     document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkHtmlLevel);
                 } else {
-                    document.getElementById("win").style.display = "block";
+                    showFinalScreen(); // Changed from direct win display to final screen check
+                }
+            } else if (autoSubmit) {
+                document.getElementById(level.id).style.display = "none";
+                if (levelIndex < data.levels.length) {
+                    document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkHtmlLevel);
+                } else {
+                    showFinalScreen(); // Changed from direct win display to final screen check
                 }
             } else {
                 alert(`Incorrect ${level.language} code. Try again.`);
@@ -69,18 +83,28 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 });
 
-function checkCLevel(levelIndex) {
+function checkCLevel(levelIndex, autoSubmit = false) {
     fetch('data/cLevels.json')
         .then(response => response.json())
         .then(data => {
             const level = data.levels[levelIndex - 1];
             const userCode = document.getElementById(`cInput${levelIndex}`).value.trim();
             if (userCode === level.correctCode) {
+                updateScore();
                 document.getElementById(level.id).style.display = "none";
                 if (levelIndex < data.levels.length) {
                     document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkCLevel);
                 } else {
-                    document.getElementById("win").style.display = "block";
+                    showFinalScreen(); // Changed from direct win display to final screen check
+                }
+            } else if (autoSubmit) {
+                document.getElementById(level.id).style.display = "none";
+                if (levelIndex < data.levels.length) {
+                    document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkCLevel);
+                } else {
+                    showFinalScreen(); // Changed from direct win display to final screen check
                 }
             } else {
                 alert(`Incorrect ${level.language} code. Try again.`);
@@ -89,18 +113,26 @@ function checkCLevel(levelIndex) {
 }
 
 function showLevel2() {
+    // Hide all initial elements
     document.getElementById("buttonContainer").style.display = "none";
     document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";  // Added this line
+    document.getElementById("introText").style.display = "none"; // Added this line
+    
     const firstCLevel = document.querySelector("#cLevelsContainer .level");
     if (firstCLevel) {
         firstCLevel.style.display = "block";
+        startTimer(1, checkCLevel);
     }
 }
 
 // python debuggingg code
 function showLevel3() {
+    // Hide all initial elements
     document.getElementById("buttonContainer").style.display = "none"; // Hide button container
     document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";  // Added this line
+    document.getElementById("introText").style.display = "none"; // Added this line
 
     fetch('data/pyLevels.json')
         .then(response => response.json())
@@ -121,21 +153,33 @@ function showLevel3() {
                 levelsContainer.appendChild(levelDiv);
             });
             document.getElementById(data.levels[0].id).style.display = "block"; // Show the first level
+            startTimer(1, checkpyLevel);
         });
 }
 
-function checkpyLevel(levelIndex) {
+function checkpyLevel(levelIndex, autoSubmit = false) {
     fetch('data/pyLevels.json')
         .then(response => response.json())
         .then(data => {
             const level = data.levels[levelIndex - 1];
             const userCode = document.getElementById(`pyInput${levelIndex}`).value.trim();
             if (userCode === level.correctCode) {
+                updateScore(); // Only update score when code is correct
                 document.getElementById(level.id).style.display = "none";
                 if (levelIndex < data.levels.length) {
                     document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkpyLevel);
                 } else {
-                    document.getElementById("win").style.display = "block";
+                    showFinalScreen();
+                }
+            } else if (autoSubmit) {
+                // Just move to next level without updating score when time runs out
+                document.getElementById(level.id).style.display = "none";
+                if (levelIndex < data.levels.length) {
+                    document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkpyLevel);
+                } else {
+                    showFinalScreen();
                 }
             } else {
                 alert(`Incorrect ${level.language} code. Try again.`);
@@ -143,6 +187,27 @@ function checkpyLevel(levelIndex) {
         });
 }
 
+// Add this new function to handle the final screen
+function showFinalScreen() {
+    // Hide all containers
+    document.getElementById("htmlLevelsContainer").style.display = "none";
+    document.getElementById("cLevelsContainer").style.display = "none";
+    document.getElementById("pyLevelsContainer").style.display = "none";
+    document.getElementById("buttonContainer").style.display = "none";
+    document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";
+    document.getElementById("introText").style.display = "none";
+    
+    // Check score and show appropriate message
+    if (score >= 3) {
+        document.getElementById("win").style.display = "block";
+        document.getElementById("fail").style.display = "none";
+    } else {
+        document.getElementById("win").style.display = "none";
+        document.getElementById("fail").style.display = "block";
+        document.getElementById("finalScore").textContent = score;
+    }
+}
 
 // Add timer and score elements to HTML
 document.addEventListener("DOMContentLoaded", function() {
@@ -187,51 +252,13 @@ function updateScore() {
     document.getElementById("scoreValue").textContent = score;
 }
 
-function checkCLevel(levelIndex, autoSubmit = false) {
-    fetch('data/cLevels.json')
-        .then(response => response.json())
-        .then(data => {
-            const level = data.levels[levelIndex - 1];
-            const userCode = document.getElementById(`cInput${levelIndex}`).value.trim();
-            if (userCode === level.correctCode || autoSubmit) {
-                updateScore();
-                document.getElementById(level.id).style.display = "none";
-                if (levelIndex < data.levels.length) {
-                    document.getElementById(data.levels[levelIndex].id).style.display = "block";
-                    startTimer(levelIndex + 1, checkCLevel);
-                } else {
-                    document.getElementById("win").style.display = "block";
-                }
-            } else {
-                alert(`Incorrect ${level.language} code. Try again.`);
-            }
-        });
-}
-
-function checkHtmlLevel(levelIndex, autoSubmit = false) {
-    fetch('data/htmlLevels.json')
-        .then(response => response.json())
-        .then(data => {
-            const level = data.levels[levelIndex - 1];
-            const userCode = document.getElementById(`htmlInput${levelIndex}`).value.trim();
-            if (userCode === level.correctCode || autoSubmit) {
-                updateScore();
-                document.getElementById(level.id).style.display = "none";
-                if (levelIndex < data.levels.length) {
-                    document.getElementById(data.levels[levelIndex].id).style.display = "block";
-                    startTimer(levelIndex + 1, checkHtmlLevel);
-                } else {
-                    document.getElementById("win").style.display = "block";
-                }
-            } else {
-                alert(`Incorrect ${level.language} code. Try again.`);
-            }
-        });
-}
-
 function showLevel2() {
+    // Hide all initial elements
     document.getElementById("buttonContainer").style.display = "none";
     document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";  // Added this line
+    document.getElementById("introText").style.display = "none"; // Added this line
+    
     const firstCLevel = document.querySelector("#cLevelsContainer .level");
     if (firstCLevel) {
         firstCLevel.style.display = "block";
@@ -240,8 +267,11 @@ function showLevel2() {
 }
 
 function showLevel1() {
+    // Hide all initial elements
     document.getElementById("buttonContainer").style.display = "none";
     document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";  // Added this line
+    document.getElementById("introText").style.display = "none"; // Added this line
 
     fetch('data/htmlLevels.json')
         .then(response => response.json())
@@ -268,8 +298,11 @@ function showLevel1() {
 
 // Python debugging code
 function showLevel3() {
+    // Hide all initial elements
     document.getElementById("buttonContainer").style.display = "none"; // Hide button container
     document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";  // Added this line
+    document.getElementById("introText").style.display = "none"; // Added this line
 
     fetch('data/pyLevels.json')
         .then(response => response.json())
@@ -300,17 +333,48 @@ function checkpyLevel(levelIndex, autoSubmit = false) {
         .then(data => {
             const level = data.levels[levelIndex - 1];
             const userCode = document.getElementById(`pyInput${levelIndex}`).value.trim();
-            if (userCode === level.correctCode || autoSubmit) {
-                updateScore();
+            if (userCode === level.correctCode) {
+                updateScore(); // Only update score when code is correct
                 document.getElementById(level.id).style.display = "none";
                 if (levelIndex < data.levels.length) {
                     document.getElementById(data.levels[levelIndex].id).style.display = "block";
                     startTimer(levelIndex + 1, checkpyLevel);
                 } else {
-                    document.getElementById("win").style.display = "block";
+                    showFinalScreen();
+                }
+            } else if (autoSubmit) {
+                // Just move to next level without updating score when time runs out
+                document.getElementById(level.id).style.display = "none";
+                if (levelIndex < data.levels.length) {
+                    document.getElementById(data.levels[levelIndex].id).style.display = "block";
+                    startTimer(levelIndex + 1, checkpyLevel);
+                } else {
+                    showFinalScreen();
                 }
             } else {
                 alert(`Incorrect ${level.language} code. Try again.`);
             }
         });
+}
+
+// Add this new function to handle the final screen
+function showFinalScreen() {
+    // Hide all containers
+    document.getElementById("htmlLevelsContainer").style.display = "none";
+    document.getElementById("cLevelsContainer").style.display = "none";
+    document.getElementById("pyLevelsContainer").style.display = "none";
+    document.getElementById("buttonContainer").style.display = "none";
+    document.getElementById("mainTitle").style.display = "none";
+    document.getElementById("subTitle").style.display = "none";
+    document.getElementById("introText").style.display = "none";
+    
+    // Check score and show appropriate message
+    if (score >= 3) {
+        document.getElementById("win").style.display = "block";
+        document.getElementById("fail").style.display = "none";
+    } else {
+        document.getElementById("win").style.display = "none";
+        document.getElementById("fail").style.display = "block";
+        document.getElementById("finalScore").textContent = score;
+    }
 }
