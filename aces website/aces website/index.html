@@ -9,8 +9,8 @@
 <body>
     <div class="outer-box">
         <h1 id="mainTitle">WELCOME</h1>
-        <h2>The Debugging Challenge</h2>
-        <p id="mainTitle">Choose the option to continue</p>
+        <h2 id="subTitle">The Debugging Challenge</h2>
+        <p id="introText">Choose the option to continue</p>
 
         <div class="button-container" id="buttonContainer">
             <button onclick="showLevel1()">HTML CSS DEBUGGING</button>
@@ -32,6 +32,12 @@
             <h1>Congratulations!</h1>
             <p>You've completed all levels!</p>
             <p>Get Your Goodies From The ACES Team !!!!</p>
+        </div>
+
+        <div id="fail" class="hidden">
+            <h1>Better Luck Next Time!</h1>
+            <p>You need at least 3 correct solutions to win.</p>
+            <p>Your score: <span id="finalScore">0</span></p>
         </div>
     </div>
 
